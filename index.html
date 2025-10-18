@@ -148,53 +148,13 @@
 </head>
 <body>
   <div class="card" role="main">
-    <h1>Matchmaker 2.0 — Helping you find luv since 2020</h1>
-
-    <!-- Exact static reproduction of the supplied text -->
+    <h1>Matchmaker 2.0 — Love evolved</h1>
     <pre class="terminal" aria-label="Static reproduction of Matchmaker output">
-                    Matchmaker 2.0
-          Helping you find luv since 2020
-                    Cupidsoft, Inc.
-******************************************************
-
-This program figures out if you and I are meant to be.
-You will answer 5 questions. To each question, answer 5
-if you strongly agree, 4 if you agree, 3 if you neither
-agree nor disagree, 2 if you disagree, and 1 if you
-strongly disagree.
-
-Our happiness depends on you. Don't let us down ...
-
-Question 1
-----------
-Nickelback is the greatest rock band of all time: 1
-
-Question 2
-----------
-Android phones are better than iPhones: 5
-
-Question 3
-----------
-The Bears are better than the Packers: 3
-
-Question 4
-----------
-Post Malone's use of autotune is just so cool: 1
-
-Question 5
-----------
-Dr. Klump should get himself a Tesla: 4
-
-Your score was 99.
-Hey, wanna get married ... I mean, wanna go get some food?
     </pre>
-
-    <!-- Interactive version -->
     <div class="interactive" aria-hidden="false">
       <div class="questions" id="quiz">
-        <!-- Question markup (JS will read & compute) -->
         <div class="q">
-          <label class="question-title">Question 1 — Nickelback is the greatest rock band of all time</label>
+          <label class="question-title">Question 1 — Breaking Bad is the greatest show of all time</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q1" value="5">5</label>
             <label class="choice"><input type="radio" name="q1" value="4">4</label>
@@ -205,7 +165,7 @@ Hey, wanna get married ... I mean, wanna go get some food?
         </div>
 
         <div class="q">
-          <label class="question-title">Question 2 — Android phones are better than iPhones</label>
+          <label class="question-title">Question 2 — MMA is the best sport in the world</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q2" value="5">5</label>
             <label class="choice"><input type="radio" name="q2" value="4">4</label>
@@ -216,7 +176,7 @@ Hey, wanna get married ... I mean, wanna go get some food?
         </div>
 
         <div class="q">
-          <label class="question-title">Question 3 — The Bears are better than the Packers</label>
+          <label class="question-title">Question 3 — Tacos are better than pizza</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q3" value="5">5</label>
             <label class="choice"><input type="radio" name="q3" value="4">4</label>
@@ -227,7 +187,7 @@ Hey, wanna get married ... I mean, wanna go get some food?
         </div>
 
         <div class="q">
-          <label class="question-title">Question 4 — Post Malone's use of autotune is just so cool</label>
+          <label class="question-title">Question 4 — Superman is one of the best movies of 2025</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q4" value="5">5</label>
             <label class="choice"><input type="radio" name="q4" value="4">4</label>
@@ -238,7 +198,7 @@ Hey, wanna get married ... I mean, wanna go get some food?
         </div>
 
         <div class="q">
-          <label class="question-title">Question 5 — Dr. Klump should get himself a Tesla</label>
+          <label class="question-title">Question 5 — Xbox is a better console than Playstation</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q5" value="5">5</label>
             <label class="choice"><input type="radio" name="q5" value="4">4</label>
@@ -253,25 +213,22 @@ Hey, wanna get married ... I mean, wanna go get some food?
           <button class="btn secondary" id="resetBtn" type="button">Reset</button>
         </div>
         <div class="tiny" style="margin-top:10px;">
-          The interactive score simply sums your answers (each 1–5). You can change the scoring script if you prefer another rule.
         </div>
       </div>
 
       <aside class="result" aria-live="polite">
-        <div class="tiny">Interactive result</div>
+        <div class="tiny">Results</div>
         <div class="big-score" id="scoreDisplay">Your score: —</div>
         <div id="matchMsg" class="tiny">Answer the questions and press <strong>Calculate score</strong>.</div>
         <div style="margin-top:10px;">
-          <button class="btn" id="suggestBtn">Wanna get some food?</button>
+          <button class="btn" id="suggestBtn">Want to grab food?</button>
         </div>
       </aside>
     </div>
 
-    <footer class="small">Made with ❤️ by Cupidsoft, Inc. — Matchmaker 2.0</footer>
   </div>
 
   <script>
-    // Prefill the interactive form with the answers you provided in your example:
     const prefill = { q1: "1", q2: "5", q3: "3", q4: "1", q5: "4" };
     Object.entries(prefill).forEach(([k,v]) => {
       const el = document.querySelector('input[name="'+k+'"][value="'+v+'"]');
@@ -292,9 +249,7 @@ Hey, wanna get married ... I mean, wanna go get some food?
         answers.push(parseInt(v.value,10));
       }
       const sum = answers.reduce((a,b)=>a+b,0);
-      // default (simple) score: sum * 7 to show a larger range (optional).
-      // We'll present both the raw sum and a scaled score to make results feel punchier.
-      const scaled = sum * 7; // arbitrary scale so users often get values above 50
+      const scaled = sum * 7; 
       return { ok: true, sum, scaled, answers };
     }
 
@@ -307,13 +262,12 @@ Hey, wanna get married ... I mean, wanna go get some food?
       }
       scoreDisplay.textContent = "Your score: " + r.scaled;
       matchMsg.textContent = "Raw sum: " + r.sum + " (answers: " + r.answers.join(', ') + ")";
-      // playful match message
       if (r.scaled >= 90) {
-        matchMsg.textContent += " — Hey, we're practically soulmates. Wanna get married ... or at least grab food?";
+        matchMsg.textContent += " — We agree on a lot of things, and I think we should grab some food together";
       } else if (r.scaled >= 60) {
-        matchMsg.textContent += " — Not bad — let's grab a bite and talk.";
+        matchMsg.textContent += " — Not bad, let's go get some food and talk over it";
       } else {
-        matchMsg.textContent += " — Hm, we might disagree on some things, but food is neutral territory.";
+        matchMsg.textContent += " — We do disagree on some things, and I do not think we are a match";
       }
     });
 
@@ -323,7 +277,6 @@ Hey, wanna get married ... I mean, wanna go get some food?
       matchMsg.textContent = "Answer the questions and press Calculate score.";
     });
 
-    // pre-calc on load so the interactive panel reflects the example answers
     window.addEventListener('load', () => calcBtn.click());
 
     suggestBtn.addEventListener('click', () => {
