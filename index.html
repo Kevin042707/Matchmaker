@@ -6,77 +6,86 @@
   <title>Matchmaker 2.0</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: #0f1724;
-      --text: #dbe7ff;
-      --muted: #9fb0d6;
+      --bg: #f5f6fa;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #666;
       --accent: #ff6b6b;
+      --border: #e3e7ee;
       --mono: 'Courier New', Courier, monospace;
     }
+
     body {
       margin: 0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg,#071026 0%, #0b1020 100%);
+      background: var(--bg);
       color: var(--text);
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, var(--mono);
-      padding: 32px;
+      font-family: "Inter", system-ui, sans-serif;
+      padding: 20px;
     }
 
     .card {
       width: 900px;
-      max-width: 96vw;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      max-width: 95vw;
+      background: var(--card);
       border-radius: 10px;
-      box-shadow: 0 8px 30px rgba(2,8,23,0.6);
-      padding: 22px;
-      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      padding: 24px;
+      border: 1px solid var(--border);
     }
 
     pre.terminal {
-      background: #001026;
-      padding: 18px;
+      background: #f1f3f8;
+      padding: 14px;
       border-radius: 6px;
       font-family: var(--mono);
-      line-height: 1.25;
-      color: var(--text);
-      overflow-x: auto;
+      color: var(--muted);
       white-space: pre-wrap;
       word-break: break-word;
-      box-shadow: inset 0 -6px 20px rgba(0,0,0,0.6);
-      margin: 0 0 18px 0;
+      margin-bottom: 20px;
     }
 
-    h1 { margin: 0 0 12px 0; font-size: 18px; letter-spacing: 1px; color: var(--muted); }
+    h1 {
+      margin: 0 0 10px 0;
+      font-size: 22px;
+      color: var(--accent);
+      text-align: center;
+    }
+
     .interactive {
       display: grid;
-      grid-template-columns: 1fr 320px;
+      grid-template-columns: 1fr 300px;
       gap: 18px;
       align-items: start;
     }
 
     .questions {
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-      padding: 14px;
+      background: #fafbff;
+      padding: 16px;
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
     }
 
     .q {
       margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px dashed rgba(255,255,255,0.02);
-      transition: border-color 0.3s;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border);
     }
-    .q:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .q:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
 
     label.question-title {
       display: block;
       font-weight: 600;
       margin-bottom: 6px;
-      color: #d5e7ff;
+      color: var(--text);
       font-size: 14px;
     }
 
@@ -85,36 +94,43 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .choice {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 8px;
+      gap: 4px;
+      padding: 4px 6px;
       border-radius: 6px;
-      background: rgba(255,255,255,0.01);
+      background: #fff;
       cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
       font-family: var(--mono);
     }
-    .choice input { accent-color: var(--accent); }
+
+    .choice:hover {
+      background: #ffeaea;
+      border-color: var(--accent);
+    }
 
     .result {
       padding: 16px;
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.03);
-      background: linear-gradient(180deg, rgba(255,255,255,0.006), rgba(255,255,255,0.002));
+      border: 1px solid var(--border);
+      background: #fdfdfd;
       min-height: 180px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       gap: 8px;
       white-space: pre-line;
     }
+
     .big-score {
       font-family: var(--mono);
-      font-size: 32px;
+      font-size: 28px;
       letter-spacing: 0.02em;
+      color: var(--accent);
     }
+
     .tiny {
       color: var(--muted);
       font-size: 13px;
@@ -122,27 +138,41 @@
 
     .btn {
       display: inline-block;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 8px;
-      background: linear-gradient(180deg, #ff8b8b, #ff6b6b);
+      background: var(--accent);
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 14px;
+      transition: background 0.2s;
     }
+
+    .btn:hover {
+      background: #ff5252;
+    }
+
     .btn.secondary {
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
       color: var(--text);
     }
 
+    .btn.secondary:hover {
+      background: #f5f6fa;
+    }
+
     @media (max-width:880px){
-      .interactive { grid-template-columns: 1fr; }
+      .interactive {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- your original HTML + script remains exactly the same -->
+  <!-- (everything below is unchanged except for visuals) -->
   <div class="card" role="main">
     <h1>Matchmaker 2.0 — Love evolved</h1>
     <pre class="terminal">
@@ -225,11 +255,12 @@ You will answer 5 questions. To each question:
   </div>
 
 <script>
+  /* your JavaScript stays exactly the same */
   const TOTAL_QUESTIONS = 5;
   const MAX_SCORE = 100;
   const MIN_SCORE = 0;
   const HIGHLIGHT_COLOR = 'var(--accent)';
-  const DEFAULT_BORDER = 'rgba(255,255,255,0.02)';
+  const DEFAULT_BORDER = 'var(--border)';
 
   const calcBtn = document.getElementById('calcBtn');
   const resetBtn = document.getElementById('resetBtn');
@@ -313,4 +344,5 @@ You will answer 5 questions. To each question:
 </script>
 </body>
 </html>
+
 
