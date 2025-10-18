@@ -68,6 +68,7 @@
       margin-bottom: 14px;
       padding-bottom: 8px;
       border-bottom: 1px dashed rgba(255,255,255,0.02);
+      transition: border-color 0.3s;
     }
     .q:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
@@ -102,15 +103,16 @@
       border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.03);
       background: linear-gradient(180deg, rgba(255,255,255,0.006), rgba(255,255,255,0.002));
-      min-height: 160px;
+      min-height: 180px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 8px;
+      white-space: pre-line;
     }
     .big-score {
       font-family: var(--mono);
-      font-size: 36px;
+      font-size: 32px;
       letter-spacing: 0.02em;
     }
     .tiny {
@@ -135,12 +137,6 @@
       color: var(--text);
     }
 
-    footer.small {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     @media (max-width:880px){
       .interactive { grid-template-columns: 1fr; }
     }
@@ -149,13 +145,19 @@
 <body>
   <div class="card" role="main">
     <h1>Matchmaker 2.0 — Love evolved</h1>
-    <pre class="terminal" aria-label="Static reproduction of Matchmaker output">
-      This program figures out if you and I are a match. You will answer 5 questions. To each question, answer 5 if you strongly agree, 4 if you agree, 3 if you neither agree nor disagree, 2 if you disagree, and 1 if you strongly disagree.
+    <pre class="terminal">
+This program figures out if you and I are a match.
+You will answer 5 questions. To each question:
+5 = strongly agree
+4 = agree
+3 = neutral
+2 = disagree
+1 = strongly disagree
     </pre>
-    <div class="interactive" aria-hidden="false">
+
+    <div class="interactive">
       <div class="questions" id="quiz">
-        <div class="q">
-          <label class="question-title">Question 1 — Breaking Bad is the greatest show of all time</label>
+        <div class="q"><label class="question-title">Question 1 — Breaking Bad is the greatest show of all time</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q1" value="5">5</label>
             <label class="choice"><input type="radio" name="q1" value="4">4</label>
@@ -165,8 +167,7 @@
           </div>
         </div>
 
-        <div class="q">
-          <label class="question-title">Question 2 — MMA is the best sport in the world</label>
+        <div class="q"><label class="question-title">Question 2 — MMA is the best sport in the world</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q2" value="5">5</label>
             <label class="choice"><input type="radio" name="q2" value="4">4</label>
@@ -176,8 +177,7 @@
           </div>
         </div>
 
-        <div class="q">
-          <label class="question-title">Question 3 — Tacos are better than pizza</label>
+        <div class="q"><label class="question-title">Question 3 — Tacos are better than pizza</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q3" value="5">5</label>
             <label class="choice"><input type="radio" name="q3" value="4">4</label>
@@ -187,8 +187,7 @@
           </div>
         </div>
 
-        <div class="q">
-          <label class="question-title">Question 4 — Superman is one of the best movies of 2025</label>
+        <div class="q"><label class="question-title">Question 4 — Superman is one of the best movies of 2025</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q4" value="5">5</label>
             <label class="choice"><input type="radio" name="q4" value="4">4</label>
@@ -198,8 +197,7 @@
           </div>
         </div>
 
-        <div class="q">
-          <label class="question-title">Question 5 — Xbox is a better console than Playstation</label>
+        <div class="q"><label class="question-title">Question 5 — Xbox is a better console than Playstation</label>
           <div class="choices">
             <label class="choice"><input type="radio" name="q5" value="5">5</label>
             <label class="choice"><input type="radio" name="q5" value="4">4</label>
@@ -213,8 +211,6 @@
           <button class="btn" id="calcBtn">Calculate score</button>
           <button class="btn secondary" id="resetBtn" type="button">Reset</button>
         </div>
-        <div class="tiny" style="margin-top:10px;">
-        </div>
       </div>
 
       <aside class="result" aria-live="polite">
@@ -226,16 +222,9 @@
         </div>
       </aside>
     </div>
-
   </div>
 
- <script>
-  const prefill = { q1: "1", q2: "5", q3: "3", q4: "1", q5: "4" };
-  Object.entries(prefill).forEach(([k, v]) => {
-    const el = document.querySelector('input[name="' + k + '"][value="' + v + '"]');
-    if (el) el.checked = true;
-  });
-
+<script>
   const calcBtn = document.getElementById('calcBtn');
   const resetBtn = document.getElementById('resetBtn');
   const scoreDisplay = document.getElementById('scoreDisplay');
@@ -244,44 +233,62 @@
 
   function computeScore() {
     const answers = [];
+    let firstUnanswered = null;
+
+    document.querySelectorAll('.q').forEach(q => q.style.borderColor = 'rgba(255,255,255,0.02)');
+
     for (let i = 1; i <= 5; i++) {
+      const qBlock = document.querySelector(`.q:nth-of-type(${i})`);
       const v = document.querySelector('input[name="q' + i + '"]:checked');
-      if (!v) return { ok: false, message: 'Please answer all questions.' };
-      answers.push(parseInt(v.value, 10));
+      if (!v) {
+        if (!firstUnanswered) firstUnanswered = qBlock;
+        qBlock.style.borderColor = 'var(--accent)';
+      }
+      answers.push(v ? parseInt(v.value, 10) : null);
+    }
+
+    if (firstUnanswered) {
+      firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
+      return { ok: false, message: 'Please answer all highlighted questions before proceeding.' };
     }
 
     const sum = answers.reduce((a, b) => a + b, 0);
     const scaled = Math.min(100, Math.round(((sum - 5) / 20) * 100));
-
-    return { ok: true, sum, scaled };
+    return { ok: true, sum, scaled, answers };
   }
 
   calcBtn.addEventListener('click', () => {
     const r = computeScore();
     if (!r.ok) {
-      matchMsg.textContent = r.message;
       scoreDisplay.textContent = "Your score: —";
+      matchMsg.textContent = r.message;
       return;
     }
 
-    scoreDisplay.textContent = "Your score: " + r.scaled;
+    scoreDisplay.textContent = "Your score: " + r.scaled + "%";
 
+    let remark = "";
     if (r.scaled >= 90) {
-      matchMsg.textContent = "We agree on a lot of things. We should definitely grab some food!";
+      remark = "We agree on a lot of things, lets go get some food";
     } else if (r.scaled >= 60) {
-      matchMsg.textContent = "Not bad. Let's go get some food and talk over it.";
+      remark = "Not bad, we should get some food and talk over it";
     } else {
-      matchMsg.textContent = "We do disagree on some things, so maybe we're not a match.";
+      remark = "We might disagree on a few things, but lets go get some food anyway";
     }
+
+    const summary = r.answers
+      .map((val, i) => `Question ${i + 1}: ${val}/5`)
+      .join('\n');
+
+    matchMsg.textContent = `${summary}\n\nOverall Compatibility: ${r.scaled}%\n${remark}`;
   });
 
   resetBtn.addEventListener('click', () => {
     document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
+    document.querySelectorAll('.q').forEach(q => q.style.borderColor = 'rgba(255,255,255,0.02)');
     scoreDisplay.textContent = "Your score: —";
     matchMsg.textContent = "Answer the questions and press Calculate score.";
   });
-
-  window.addEventListener('load', () => calcBtn.click());
 
   suggestBtn.addEventListener('click', () => {
     alert("Let's go grab some Raising Canes.");
@@ -289,3 +296,4 @@
 </script>
 </body>
 </html>
+
