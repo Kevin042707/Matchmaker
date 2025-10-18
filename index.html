@@ -225,35 +225,52 @@ You will answer 5 questions. To each question:
   </div>
 
 <script>
+  const TOTAL_QUESTIONS = 5;
+  const MAX_SCORE = 100;
+  const MIN_SCORE = 0;
+  const HIGHLIGHT_COLOR = 'var(--accent)';
+  const DEFAULT_BORDER = 'rgba(255,255,255,0.02)';
+
   const calcBtn = document.getElementById('calcBtn');
   const resetBtn = document.getElementById('resetBtn');
   const scoreDisplay = document.getElementById('scoreDisplay');
   const matchMsg = document.getElementById('matchMsg');
   const suggestBtn = document.getElementById('suggestBtn');
 
-  function computeScore() {
-    const answers = [];
+  function validate() {
+    let allAnswered = true;
     let firstUnanswered = null;
+    document.querySelectorAll('.q').forEach(q => q.style.borderColor = DEFAULT_BORDER);
 
-    document.querySelectorAll('.q').forEach(q => q.style.borderColor = 'rgba(255,255,255,0.02)');
-
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
       const qBlock = document.querySelector(`.q:nth-of-type(${i})`);
-      const v = document.querySelector('input[name="q' + i + '"]:checked');
-      if (!v) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      if (!selected) {
+        qBlock.style.borderColor = HIGHLIGHT_COLOR;
         if (!firstUnanswered) firstUnanswered = qBlock;
-        qBlock.style.borderColor = 'var(--accent)';
+        allAnswered = false;
       }
-      answers.push(v ? parseInt(v.value, 10) : null);
     }
 
-    if (firstUnanswered) {
+    if (!allAnswered) {
       firstUnanswered.scrollIntoView({ behavior: "smooth", block: "center" });
-      return { ok: false, message: 'Please answer all highlighted questions before proceeding.' };
+      return { valid: false, message: "Please answer all highlighted questions before proceeding." };
+    }
+    return { valid: true };
+  }
+
+  function computeScore() {
+    const validation = validate();
+    if (!validation.valid) return validation;
+
+    const answers = [];
+    for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+      const val = parseInt(document.querySelector(`input[name="q${i}"]:checked`).value, 10);
+      answers.push(val);
     }
 
     const sum = answers.reduce((a, b) => a + b, 0);
-    const scaled = Math.min(100, Math.round(((sum - 5) / 20) * 100));
+    const scaled = Math.min(MAX_SCORE, Math.round(((sum - TOTAL_QUESTIONS) / (TOTAL_QUESTIONS * 4)) * 100));
     return { ok: true, sum, scaled, answers };
   }
 
@@ -285,7 +302,7 @@ You will answer 5 questions. To each question:
 
   resetBtn.addEventListener('click', () => {
     document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
-    document.querySelectorAll('.q').forEach(q => q.style.borderColor = 'rgba(255,255,255,0.02)');
+    document.querySelectorAll('.q').forEach(q => q.style.borderColor = DEFAULT_BORDER);
     scoreDisplay.textContent = "Your score: —";
     matchMsg.textContent = "Answer the questions and press Calculate score.";
   });
