@@ -267,9 +267,9 @@
     scoreDisplay.textContent = "Your score: " + r.scaled;
 
     if (r.scaled >= 90) {
-      matchMsg.textContent = "We agree on a lot of things — we should definitely grab some food!";
+      matchMsg.textContent = "We agree on a lot of things. We should definitely grab some food!";
     } else if (r.scaled >= 60) {
-      matchMsg.textContent = "Not bad! Let's go get some food and talk over it.";
+      matchMsg.textContent = "Not bad. Let's go get some food and talk over it.";
     } else {
       matchMsg.textContent = "We do disagree on some things, so maybe we're not a match.";
     }
@@ -284,7 +284,7 @@
   window.addEventListener('load', () => calcBtn.click());
 
   suggestBtn.addEventListener('click', () => {
-    alert("Let's go grab some Raising Canes!");
+    alert("Let's go grab some Raising Canes.");
   });
 </script>
 </body>
