@@ -262,7 +262,6 @@
         return;
       }
       scoreDisplay.textContent = "Your score: " + r.scaled;
-      matchMsg.textContent = "Raw sum: " + r.sum + " (answers: " + r.answers.join(', ') + ")";
       if (r.scaled >= 90) {
         matchMsg.textContent += " — We agree on a lot of things, and I think we should grab some food together";
       } else if (r.scaled >= 60) {
