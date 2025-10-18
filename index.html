@@ -229,59 +229,63 @@
 
   </div>
 
-  <script>
-    const prefill = { q1: "1", q2: "5", q3: "3", q4: "1", q5: "4" };
-    Object.entries(prefill).forEach(([k,v]) => {
-      const el = document.querySelector('input[name="'+k+'"][value="'+v+'"]');
-      if(el) el.checked = true;
-    });
+ <script>
+  const prefill = { q1: "1", q2: "5", q3: "3", q4: "1", q5: "4" };
+  Object.entries(prefill).forEach(([k, v]) => {
+    const el = document.querySelector('input[name="' + k + '"][value="' + v + '"]');
+    if (el) el.checked = true;
+  });
 
-    const calcBtn = document.getElementById('calcBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const matchMsg = document.getElementById('matchMsg');
-    const suggestBtn = document.getElementById('suggestBtn');
+  const calcBtn = document.getElementById('calcBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  const matchMsg = document.getElementById('matchMsg');
+  const suggestBtn = document.getElementById('suggestBtn');
 
-    function computeScore() {
-      const answers = [];
-      for (let i=1;i<=5;i++){
-        const v = document.querySelector('input[name="q'+i+'"]:checked');
-        if(!v) return { ok: false, message: 'Please answer all questions.' };
-        answers.push(parseInt(v.value,10));
-      }
-      const sum = answers.reduce((a,b)=>a+b,0);
-      const scaled = Math.min(100, Math.round((sum - 5) / (25 - 5) * 100));
-      return { ok: true, sum, scaled, answers };
+  function computeScore() {
+    const answers = [];
+    for (let i = 1; i <= 5; i++) {
+      const v = document.querySelector('input[name="q' + i + '"]:checked');
+      if (!v) return { ok: false, message: 'Please answer all questions.' };
+      answers.push(parseInt(v.value, 10));
     }
 
-    calcBtn.addEventListener('click', () => {
-      const r = computeScore();
-      if(!r.ok){
-        matchMsg.textContent = r.message;
-        scoreDisplay.textContent = "Your score: —";
-        return;
-      }
-      scoreDisplay.textContent = "Your score: " + r.scaled;
-      if (r.scaled >= 90) {
-        matchMsg.textContent += " — We agree on a lot of things, and I think we should grab some food together";
-      } else if (r.scaled >= 60) {
-        matchMsg.textContent += " — Not bad, let's go get some food and talk over it";
-      } else {
-        matchMsg.textContent += " — We do disagree on some things, and I do not think we are a match";
-      }
-    });
+    const sum = answers.reduce((a, b) => a + b, 0);
+    const scaled = Math.min(100, Math.round(((sum - 5) / 20) * 100));
 
-    resetBtn.addEventListener('click', () => {
-      document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
+    return { ok: true, sum, scaled };
+  }
+
+  calcBtn.addEventListener('click', () => {
+    const r = computeScore();
+    if (!r.ok) {
+      matchMsg.textContent = r.message;
       scoreDisplay.textContent = "Your score: —";
-      matchMsg.textContent = "Answer the questions and press Calculate score.";
-    });
+      return;
+    }
 
-    window.addEventListener('load', () => calcBtn.click());
+    scoreDisplay.textContent = "Your score: " + r.scaled;
 
-    suggestBtn.addEventListener('click', () => {
-      alert("Lets go grab some Raising Canes");
-    });
-  </script>
+    if (r.scaled >= 90) {
+      matchMsg.textContent = "We agree on a lot of things — we should definitely grab some food!";
+    } else if (r.scaled >= 60) {
+      matchMsg.textContent = "Not bad! Let's go get some food and talk over it.";
+    } else {
+      matchMsg.textContent = "We do disagree on some things, so maybe we're not a match.";
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
+    scoreDisplay.textContent = "Your score: —";
+    matchMsg.textContent = "Answer the questions and press Calculate score.";
+  });
+
+  window.addEventListener('load', () => calcBtn.click());
+
+  suggestBtn.addEventListener('click', () => {
+    alert("Let's go grab some Raising Canes!");
+  });
+</script>
 </body>
 </html>
