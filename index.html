@@ -250,7 +250,7 @@
         answers.push(parseInt(v.value,10));
       }
       const sum = answers.reduce((a,b)=>a+b,0);
-      const scaled = sum * 7; 
+      const scaled = Math.min(100, Math.round((sum - 5) / (25 - 5) * 100));
       return { ok: true, sum, scaled, answers };
     }
 
