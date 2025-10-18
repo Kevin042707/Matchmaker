@@ -10,3 +10,328 @@
     <p>This program figures out if you and I are meant to be. You will answer 5 questions. To each question, answer 5 if you strongly agree, 4 if you agree, 3 if you neither agree nor disagree, 2 if you disagree, and 1 if you strongly disagree.</p>
 </body>
 </html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Matchmaker</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #0f1724;
+      --text: #dbe7ff;
+      --muted: #9fb0d6;
+      --accent: #ff6b6b;
+      --mono: 'Courier New', Courier, monospace;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg,#071026 0%, #0b1020 100%);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, var(--mono);
+      padding: 32px;
+    }
+
+    .card {
+      width: 900px;
+      max-width: 96vw;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(2,8,23,0.6);
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    pre.terminal {
+      background: #001026;
+      padding: 18px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      line-height: 1.25;
+      color: var(--text);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      box-shadow: inset 0 -6px 20px rgba(0,0,0,0.6);
+      margin: 0 0 18px 0;
+    }
+
+    h1 { margin: 0 0 12px 0; font-size: 18px; letter-spacing: 1px; color: var(--muted); }
+    .interactive {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .questions {
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+
+    .q {
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(255,255,255,0.02);
+    }
+    .q:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    label.question-title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #d5e7ff;
+      font-size: 14px;
+    }
+
+    .choices {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .choice {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.01);
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.02);
+      font-family: var(--mono);
+    }
+    .choice input { accent-color: var(--accent); }
+
+    .result {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.006), rgba(255,255,255,0.002));
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+    .big-score {
+      font-family: var(--mono);
+      font-size: 36px;
+      letter-spacing: 0.02em;
+    }
+    .tiny {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ff8b8b, #ff6b6b);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--text);
+    }
+
+    footer.small {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width:880px){
+      .interactive { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <h1>Matchmaker 2.0 — Helping you find luv since 2020</h1>
+
+    <pre class="terminal" aria-label="Static reproduction of Matchmaker output">
+                    Matchmaker 2.0
+          Helping you find luv since 2020
+                    Cupidsoft, Inc.
+******************************************************
+
+This program figures out if you and I are meant to be.
+You will answer 5 questions. To each question, answer 5
+if you strongly agree, 4 if you agree, 3 if you neither
+agree nor disagree, 2 if you disagree, and 1 if you
+strongly disagree.
+
+Our happiness depends on you. Don't let us down ...
+
+Question 1
+----------
+Nickelback is the greatest rock band of all time: 1
+
+Question 2
+----------
+Android phones are better than iPhones: 5
+
+Question 3
+----------
+The Bears are better than the Packers: 3
+
+Question 4
+----------
+Post Malone's use of autotune is just so cool: 1
+
+Question 5
+----------
+Dr. Klump should get himself a Tesla: 4
+
+Your score was 99.
+Hey, wanna get married ... I mean, wanna go get some food?
+    </pre>
+
+    <div class="interactive" aria-hidden="false">
+      <div class="questions" id="quiz">
+        <div class="q">
+          <label class="question-title">Question 1 — Nickelback is the greatest rock band of all time</label>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="q1" value="5">5</label>
+            <label class="choice"><input type="radio" name="q1" value="4">4</label>
+            <label class="choice"><input type="radio" name="q1" value="3">3</label>
+            <label class="choice"><input type="radio" name="q1" value="2">2</label>
+            <label class="choice"><input type="radio" name="q1" value="1">1</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="question-title">Question 2 — Android phones are better than iPhones</label>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="q2" value="5">5</label>
+            <label class="choice"><input type="radio" name="q2" value="4">4</label>
+            <label class="choice"><input type="radio" name="q2" value="3">3</label>
+            <label class="choice"><input type="radio" name="q2" value="2">2</label>
+            <label class="choice"><input type="radio" name="q2" value="1">1</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="question-title">Question 3 — The Bears are better than the Packers</label>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="q3" value="5">5</label>
+            <label class="choice"><input type="radio" name="q3" value="4">4</label>
+            <label class="choice"><input type="radio" name="q3" value="3">3</label>
+            <label class="choice"><input type="radio" name="q3" value="2">2</label>
+            <label class="choice"><input type="radio" name="q3" value="1">1</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="question-title">Question 4 — Post Malone's use of autotune is just so cool</label>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="q4" value="5">5</label>
+            <label class="choice"><input type="radio" name="q4" value="4">4</label>
+            <label class="choice"><input type="radio" name="q4" value="3">3</label>
+            <label class="choice"><input type="radio" name="q4" value="2">2</label>
+            <label class="choice"><input type="radio" name="q4" value="1">1</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="question-title">Question 5 — Dr. Klump should get himself a Tesla</label>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="q5" value="5">5</label>
+            <label class="choice"><input type="radio" name="q5" value="4">4</label>
+            <label class="choice"><input type="radio" name="q5" value="3">3</label>
+            <label class="choice"><input type="radio" name="q5" value="2">2</label>
+            <label class="choice"><input type="radio" name="q5" value="1">1</label>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <button class="btn" id="calcBtn">Calculate score</button>
+          <button class="btn secondary" id="resetBtn" type="button">Reset</button>
+        </div>
+        <div class="tiny" style="margin-top:10px;">
+          The interactive score simply sums your answers (each 1–5). You can change the scoring script if you prefer another rule.
+        </div>
+      </div>
+
+      <aside class="result" aria-live="polite">
+        <div class="tiny">Interactive result</div>
+        <div class="big-score" id="scoreDisplay">Your score: —</div>
+        <div id="matchMsg" class="tiny">Answer the questions and press <strong>Calculate score</strong>.</div>
+        <div style="margin-top:10px;">
+          <button class="btn" id="suggestBtn">Wanna get some food?</button>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="small">Made with ❤️ by Cupidsoft, Inc. — Matchmaker 2.0</footer>
+  </div>
+
+  <script>
+    const prefill = { q1: "1", q2: "5", q3: "3", q4: "1", q5: "4" };
+    Object.entries(prefill).forEach(([k,v]) => {
+      const el = document.querySelector('input[name="'+k+'"][value="'+v+'"]');
+      if(el) el.checked = true;
+    });
+
+    const calcBtn = document.getElementById('calcBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const matchMsg = document.getElementById('matchMsg');
+    const suggestBtn = document.getElementById('suggestBtn');
+
+    function computeScore() {
+      const answers = [];
+      for (let i=1;i<=5;i++){
+        const v = document.querySelector('input[name="q'+i+'"]:checked');
+        if(!v) return { ok: false, message: 'Please answer all questions.' };
+        answers.push(parseInt(v.value,10));
+      }
+      const sum = answers.reduce((a,b)=>a+b,0);
+      return { ok: true, sum, scaled, answers };
+    }
+
+    calcBtn.addEventListener('click', () => {
+      const r = computeScore();
+      if(!r.ok){
+        matchMsg.textContent = r.message;
+        scoreDisplay.textContent = "Your score: —";
+        return;
+      }
+      scoreDisplay.textContent = "Your score: " + r.scaled;
+      matchMsg.textContent = "Raw sum: " + r.sum + " (answers: " + r.answers.join(', ') + ")";
+      if (r.scaled >= 90) {
+        matchMsg.textContent += " — Hey, we're practically soulmates. Wanna get married ... or at least grab food?";
+      } else if (r.scaled >= 60) {
+        matchMsg.textContent += " — Not bad — let's grab a bite and talk.";
+      } else {
+        matchMsg.textContent += " — Hm, we might disagree on some things, but food is neutral territory.";
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
+      scoreDisplay.textContent = "Your score: —";
+      matchMsg.textContent = "Answer the questions and press Calculate score.";
+    });
+
+    window.addEventListener('load', () => calcBtn.click());
+
+    suggestBtn.addEventListener('click', () => {
+      alert("Sure — where do you want to go? (This is just a demo button.)");
+    });
+  </script>
+</body>
+</html>
